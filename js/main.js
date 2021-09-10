@@ -40,7 +40,7 @@ function displayProduct(){
   var str ="";
   
   for (i=0;i<productList.length;i++){
-    str +=`<tr>
+    str +=`<tr id="${i}">
     <td>${i}</td>
     <td>${productList[i].name}</td>
     <td>${productList[i].category}</td>
@@ -108,25 +108,23 @@ function updateProduct(index){
   priceInput.value = productList[index].price;
   descriptionInput.value = productList[index].description;
   mainBtn.style.display = "none";
-  deleteProduct(index);
+  document.getElementById(index).style.display="none";
   updateBtn.style.display = "inline-block" ;
-  console.log(index)
+  localStorage.setItem("updateIndex",index);
 }
-function update(index){
+function update(){
   var newPrice = Number(priceInput.value);
-  var singleProduct = {
-    name:nameInput.value,
-    category:categoryInput.value,
-    price:newPrice,
-    description:descriptionInput.value,
-  }
-  productList.splice(index,0,singleProduct);
+  var index = localStorage.getItem("updateIndex");
+  productList[index].name=nameInput.value;
+  productList[index].category=categoryInput.value;
+  productList[index].price=newPrice;
+  productList[index].description=descriptionInput.value;
+  document.getElementById(index).style.display="block";
   displayProduct();
   clearForm();
   localStorage.setItem('oldProduct', JSON.stringify(productList));
   updateBtn.style.display = "none";
   mainBtn.style.display = "inline-block";
-  console.log(index)
 }
 
 
